@@ -11,13 +11,13 @@ int RandomNumber(int from, int to) {
 }
 
 string PlayerChoice(int playerChoice) {
-     if (playerChoice == 1)
-     	return "Stone";
-     else if (playerChoice == 2)
-     	return "Paper";
-     else if(playerChoice == 3)
-     	return "Scissors"; 
-	 return "Invalid Choice";
+	if (playerChoice == 1)
+		return "Stone";
+	else if (playerChoice == 2)
+		return "Paper";
+	else if (playerChoice == 3)
+		return "Scissors";
+	return "Invalid Choice";
 }
 
 string ComputerChoice(int computerChoice) {
@@ -91,11 +91,11 @@ string WhoWon(int playerChoice, int computerChoice) {
 }
 
 void TableResults(int round, int playerChoice, int computerChoice) {
-		cout << "___________________" << " Round [" << round + 1 << "] " << "___________________\n\n";
-		cout << "Player 1 choice: " << PlayerChoice(playerChoice) << endl;
-		cout << "Computer choice: " << ComputerChoice(computerChoice) << endl;
-	    cout << "Round Winner: " << "[" << WhoWon(playerChoice, computerChoice) << "]" << endl;
-	    cout << "__________________________________________________\n";
+	cout << "___________________" << " Round [" << round + 1 << "] " << "___________________\n\n";
+	cout << "Player 1 choice: " << PlayerChoice(playerChoice) << endl;
+	cout << "Computer choice: " << ComputerChoice(computerChoice) << endl;
+	cout << "Round Winner: " << "[" << WhoWon(playerChoice, computerChoice) << "]" << endl;
+	cout << "__________________________________________________\n";
 }
 
 int PlayerWonTimes(int rounds, int playerChoice, int computerChoice) {
@@ -129,50 +129,67 @@ int DrawTimes(int rounds, int playerChoice, int computerChoice) {
 }
 
 string DecideWinner(int rounds, int playerChoice, int computerChoice) {
-	if(ComputerWonTimes(rounds, playerChoice, computerChoice))
+	if (ComputerWonTimes(rounds, playerChoice, computerChoice))
 		return "Computer";
 	if (PlayerWonTimes(rounds, playerChoice, computerChoice))
 		return "Player1";
 	if (DrawTimes(rounds, playerChoice, computerChoice))
 		return "No Winner";
-	
+
 }
 
-void GameOver(int rounds, int playerChoice, int computerChoice) {
+void GameOver(int rounds, int playerChoice, int computerChoice, int playerwontimes, int computerwontimes, 
+	int drawtimes) {
 	cout << "\t\t\t" << "____________________________________________\n\n";
 	cout << "\t\t\t" << "\t\t+++ Game Over +++\t\t\n\n";
 	cout << "\t\t\t" << "____________________________________________\n\n";
 	cout << "\t\t\t" << "_____________ [Game Results] ________________\n\n";
 	cout << "\t\t\t" << "Game Rounds: " << rounds << endl;
-	cout << "\t\t\t" << "Player1 times won: " << PlayerWonTimes(rounds, playerChoice, computerChoice) << endl;
-	cout << "\t\t\t" << "Computer times won: " << ComputerWonTimes(rounds, playerChoice, computerChoice) << endl;
-	cout << "\t\t\t" << "Draw Times: " << DrawTimes(rounds, playerChoice, computerChoice) << endl;
+	cout << "\t\t\t" << "Player1 times won: " << playerwontimes << endl;
+	cout << "\t\t\t" << "Computer times won: " << computerwontimes << endl;
+	cout << "\t\t\t" << "Draw Times: " << drawtimes << endl;
 	cout << "\t\t\t" << "Final Winner: " << DecideWinner(rounds, playerChoice, computerChoice) << endl;
 	cout << "\t\t\t" << "____________________________________________\n";
 }
 
 void StartGame() {
 	int playerChoice = 0; int computerChoice = 0, rounds;
+	int ComputerWonTimes = 0, PlayerWonTimes = 0, DrawTimes = 0;
+
 	string winner;
+
 	do {
 		cout << "How many Rounds 1 to 10?" << endl;
 		cin >> rounds;
 	} while (rounds < 1 || rounds > 10);
+
 	for (int i = 0; i < rounds; i++) {
 
 		cout << "\n\nRound [" << i + 1 << "] begins: \n\n";
-		
-		cout << "Your Choice: [1]:Stone, [2]:Paper, [3]: Scissors ? ";
-		cin >> playerChoice;
+
+		do {
+		    cout << "Your Choice: [1]:Stone, [2]:Paper, [3]: Scissors ? ";
+		    cin >> playerChoice;
+		} while (playerChoice < 1 || playerChoice > 3);
+
 		cout << endl;
-		
+
 		computerChoice = RandomNumber(1, 3);
+
+		if (WhoWon(playerChoice, computerChoice) == "Player1")
+			PlayerWonTimes++;
+		if (WhoWon(playerChoice, computerChoice) == "Computer")
+			ComputerWonTimes++;
+		if (WhoWon(playerChoice, computerChoice) == "No Winner")
+			DrawTimes++;
 
 		TableResults(i, playerChoice, computerChoice);
 	}
 
+	
+
 	DecideWinner(rounds, playerChoice, computerChoice);
-	GameOver(rounds, playerChoice, computerChoice);
+	GameOver(rounds, playerChoice, computerChoice, PlayerWonTimes, ComputerWonTimes, DrawTimes);
 
 	char answer;
 	cout << endl;
@@ -180,22 +197,22 @@ void StartGame() {
 	cin >> answer;
 
 	switch (answer) {
-	   case 'y':
-	       system("cls");
-	       system("color 0f");
-		   StartGame();
-		   break;
-	   case 'Y':
-		   system("cls");
-		   system("color 0f");
-		   StartGame();
-		   break;
-	   case 'n':
-		   break;
-	   case 'N':
-		   break;
-	   default:
-		   break;
+	case 'y':
+		system("cls");
+		system("color 0f");
+		StartGame();
+		break;
+	case 'Y':
+		system("cls");
+		system("color 0f");
+		StartGame();
+		break;
+	case 'n':
+		break;
+	case 'N':
+		break;
+	default:
+		break;
 	}
 }
 
@@ -204,7 +221,7 @@ void StartGame() {
 
 int main() {
 	srand((unsigned)time(NULL));
-	
+
 	StartGame();
 
 	return 0;
