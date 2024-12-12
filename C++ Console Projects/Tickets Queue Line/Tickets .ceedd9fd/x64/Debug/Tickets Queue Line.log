@@ -1,0 +1,4 @@
+﻿  Tickets Queue Line.cpp
+C:\Users\rahee\source\repos\Tickets Queue Line\Tickets Queue Line.cpp(4,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\rahee\source\repos\Tickets Queue Line\clsQueueLine.h(153,14): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Tickets Queue Line.vcxproj -> C:\Users\rahee\source\repos\Tickets Queue Line\x64\Debug\Tickets Queue Line.exe
